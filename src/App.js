@@ -9,7 +9,6 @@ function App() {
 
   let [wrong, setWrong] = useState(0);
   let [charCount, setCharCount] = useState(0);
-  let [wordCount, setWordCount] = useState(0);
 
   return (
     <MemoryRouter>
@@ -20,7 +19,6 @@ function App() {
           <Context.Provider value={{
               wrong, setWrong,
               charCount, setCharCount,
-              wordCount, setWordCount
           }}>
             <Routes>
 

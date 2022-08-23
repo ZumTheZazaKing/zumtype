@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const Main = () => {
 
     const [sentences, setSentences] = useState(JSON.parse(localStorage.getItem("sentences")) || null);
-    const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,;.!?()[]{}/"\'Backspace'
+    const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,;.!?()[]{}/"\'Backspace'
     const [chosenSentences, setChosenSentences] = useState("");
     const navigate = useNavigate();
     let {wrong,charCount,setWrong,setCharCount} = useContext(Context)
@@ -43,7 +43,7 @@ export const Main = () => {
     useEffect(()=>{
        if(!sentences)return;
        const start = Math.floor(Math.random()*(sentences.length-5))
-       setChosenSentences((sentences.slice(start, start+4)).join(". "))
+       setChosenSentences((sentences.slice(start, start+2)).join(". "))
     },[sentences])
 
     const detectKeyDown = e => {
@@ -74,7 +74,7 @@ export const Main = () => {
                 paraRef.current.children[typed.length-1].classList.add('polish');
                 if(typed.length===[...paraRef.current.children].length && wrong===0){
                     const start = Math.floor(Math.random()*(sentences.length-5))
-                    setChosenSentences((sentences.slice(start, start+4)).join(". "))
+                    setChosenSentences((sentences.slice(start, start+2)).join(". "))
                     typed=[];
                     [...paraRef.current.children].map((child,i)=>{
                         child.classList.remove('wrong');
