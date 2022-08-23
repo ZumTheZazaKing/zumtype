@@ -28,12 +28,13 @@ export const Main = () => {
 
     useEffect(() => {
         if(!sentences){
-            fetch("http://metaphorpsum.com/sentences/1000000")
-            .then(res => res.text())
-            .then(data => {
-                localStorage.setItem("sentences",JSON.stringify(data.split(". ")));
-                setSentences(data.split(". "))
-            })
+            fetch("https://cors-anywhere.herokuapp.com/http://metaphorpsum.com/sentences/1000000")
+            .then(res => console.log(res))
+            /*.then(data => {
+                //localStorage.setItem("sentences",JSON.stringify(data.split(". ")));
+                //setSentences(data.split(". "))
+                console.log(data)
+            })*/
         }
 
         document.addEventListener('keydown',detectKeyDown,true)
