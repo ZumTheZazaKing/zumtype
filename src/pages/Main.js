@@ -1,12 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { Context } from "../context";
+import { useNavigate } from "react-router-dom";
 
 export const Main = () => {
 
     const [sentences, setSentences] = useState(JSON.parse(localStorage.getItem("sentences")) || null);
     const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,;.!?()[]{}/"\'Backspace'
     const [chosenSentences, setChosenSentences] = useState("");
+    const navigate = useNavigate();
+    let {wrong,charCount} = useContext(Context)
     let typed = [];
-    let wrong = 0;
     const paraRef = useRef();
 
     useEffect(() => {
@@ -34,22 +37,23 @@ export const Main = () => {
         if(e.key === "Backspace"){
             if(paraRef.current.children[typed.length-1].classList.contains('wrong')){
                 wrong--;
-                console.log(wrong)
             }
             if(paraRef.current.children[typed.length-1].innerHTML===" "){
                 typed.pop();
                 if(paraRef.current.children[typed.length-1].classList.contains('wrong'))wrong--;
-                console.log(wrong)
             }
             typed.pop();
+            charCount--;
+            console.log(charCount);
             paraRef.current.children[typed.length].classList.remove('wrong');
             paraRef.current.children[typed.length].classList.remove('polish');
             paraRef.current.children[typed.length].classList.add('unpolish');
-            if(typed[typed.length-1]===" "){typed.pop();}
         }else{
             if(typed.length===[...paraRef.current.children].length)return;
             if(paraRef.current.children[typed.length].innerHTML===" ")typed.push(" ");
             typed.push(e.key)
+            charCount++;
+            console.log(charCount)
             if(typed[typed.length-1]===paraRef.current.children[typed.length-1].innerHTML){
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
                 paraRef.current.children[typed.length-1].classList.add('polish');
@@ -67,15 +71,11 @@ export const Main = () => {
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
                 paraRef.current.children[typed.length-1].classList.add('wrong');
                 wrong++;
-                console.log(wrong)
             }
             if(paraRef.current.children[typed.length].innerHTML===" "){
                 typed.push(" ")
             }
         }
-        
-        console.log(typed);
-
     }
 
     return (
