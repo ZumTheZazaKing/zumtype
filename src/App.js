@@ -8,7 +8,9 @@ function App() {
   return (
     <MemoryRouter>
       <div className="App">
-        <Suspense fallback={<p className='text-xl'>Loading...</p>}>
+        <Suspense fallback={<div className='w-screen h-screen flex items-center justify-center'>
+          <div className="loading"></div>
+        </div>}>
           <Routes>
 
             <Route path="/" element={<Main/>}/>

@@ -13,7 +13,10 @@ export const Main = () => {
         if(!sentences){
             fetch("http://metaphorpsum.com/sentences/1000000")
             .then(res => res.text())
-            .then(data => localStorage.setItem("sentences",JSON.stringify(data.split(". "))))
+            .then(data => {
+                localStorage.setItem("sentences",JSON.stringify(data.split(". ")));
+                setSentences(data.split(". "))
+            })
         }
 
         document.addEventListener('keydown',detectKeyDown,true);
@@ -53,6 +56,12 @@ export const Main = () => {
                 if(typed.length===[...paraRef.current.children].length && wrong===0){
                     const start = Math.floor(Math.random()*(sentences.length-5))
                     setChosenSentences((sentences.slice(start, start+4)).join(". "))
+                    typed=[];
+                    [...paraRef.current.children].map((child,i)=>{
+                        child.classList.remove('wrong');
+                        child.classList.remove('polish');
+                        child.classList.add('unpolish');
+                    })
                 }
             }else{
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
@@ -76,15 +85,19 @@ export const Main = () => {
                 justify-center font-mono flex-col
             "
         >
-            <p className="accent sm:text-xl cursor-default">
-                Start Typing
-            </p>
-            <br/>
-            <p ref={paraRef} className="sm:text-3xl text-justify px-10 w-screen sm:w-3/4 leading-normal">
-                {[...chosenSentences].map((sentence,i) => 
-                    <span className={`unpolish`} key={i}>{sentence}</span>
-                )}
-            </p>
+            {chosenSentences ? 
+            <div className="text-justify px-10 w-screen sm:w-3/4 leading-normal">
+                <p className="accent sm:text-xl cursor-default text-center">
+                    Start Typing
+                </p>
+                <br/>
+                <p ref={paraRef} className="sm:text-3xl">
+                    {[...chosenSentences].map((sentence,i) => 
+                        <span className={`unpolish`} key={i}>{sentence}</span>
+                    )}
+                </p>
+            </div>
+            :<div className="loading"></div>}
         </div>
     )
 }
