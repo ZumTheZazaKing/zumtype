@@ -8,9 +8,23 @@ export const Main = () => {
     const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,;.!?()[]{}/"\'Backspace'
     const [chosenSentences, setChosenSentences] = useState("");
     const navigate = useNavigate();
-    let {wrong,charCount} = useContext(Context)
+    let {wrong,charCount,setWrong,setCharCount} = useContext(Context)
     let typed = [];
+    let [timerCount, setTimerCount] = useState(30);
+    let started = false;
     const paraRef = useRef();
+    const timerRef= useRef();
+    
+    let timer = setInterval(()=>{
+        if(started){
+            timerRef.current.innerHTML = timerCount;
+            setTimerCount(timerCount--)
+        }
+        if(timerCount===0){
+            clearInterval(timer);
+            navigate('/results')
+        }
+    },1000)
 
     useEffect(() => {
         if(!sentences){
@@ -22,7 +36,7 @@ export const Main = () => {
             })
         }
 
-        document.addEventListener('keydown',detectKeyDown,true);
+        document.addEventListener('keydown',detectKeyDown,true)
 
     },[])
 
@@ -36,23 +50,24 @@ export const Main = () => {
         if(!acceptedKeys.includes(e.key))return;
         if(e.key === "Backspace"){
             if(paraRef.current.children[typed.length-1].classList.contains('wrong')){
-                wrong--;
+                setWrong(--wrong);
             }
             if(paraRef.current.children[typed.length-1].innerHTML===" "){
                 typed.pop();
-                if(paraRef.current.children[typed.length-1].classList.contains('wrong'))wrong--;
+                if(paraRef.current.children[typed.length-1].classList.contains('wrong'))setWrong(--wrong);
             }
             typed.pop();
-            charCount--;
+            setCharCount(--charCount);
             console.log(charCount);
             paraRef.current.children[typed.length].classList.remove('wrong');
             paraRef.current.children[typed.length].classList.remove('polish');
             paraRef.current.children[typed.length].classList.add('unpolish');
         }else{
+            if(!started)started=true;
             if(typed.length===[...paraRef.current.children].length)return;
             if(paraRef.current.children[typed.length].innerHTML===" ")typed.push(" ");
             typed.push(e.key)
-            charCount++;
+            setCharCount(++charCount);
             console.log(charCount)
             if(typed[typed.length-1]===paraRef.current.children[typed.length-1].innerHTML){
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
@@ -70,7 +85,8 @@ export const Main = () => {
             }else{
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
                 paraRef.current.children[typed.length-1].classList.add('wrong');
-                wrong++;
+                setWrong(++wrong);
+                console.log(wrong)
             }
             if(paraRef.current.children[typed.length].innerHTML===" "){
                 typed.push(" ")
@@ -87,7 +103,7 @@ export const Main = () => {
         >
             {chosenSentences ? 
             <div className="text-justify px-10 w-screen sm:w-3/4 leading-normal">
-                <p className="accent sm:text-xl cursor-default text-center">
+                <p ref={timerRef} className="accent sm:text-2xl cursor-default text-center">
                     Start Typing
                 </p>
                 <br/>
