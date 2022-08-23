@@ -2,8 +2,11 @@ import { Context } from "../context";
 import { useContext } from "react";
 
 export const Results = () => {
-    let {wordCount} = useContext(Context);
+    let {charCount,wrong} = useContext(Context);
     return (
-        <h1>Word Count: {wordCount}</h1>
+        <div className="text-white leading-normal">
+            Word Count: {charCount}<br/>
+            Wrong: {wrong}
+        </div>
     )
 }
