@@ -1,4 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type";
 import { useState, useEffect, useRef } from "react";
 
 export const Main = () => {
@@ -32,8 +31,13 @@ export const Main = () => {
         if(e.key === "Backspace"){
             if(paraRef.current.children[typed.length-1].classList.contains('wrong')){
                 wrong--;
+                console.log(wrong)
             }
-            if(paraRef.current.children[typed.length-1].innerHTML===" ")typed.pop();
+            if(paraRef.current.children[typed.length-1].innerHTML===" "){
+                typed.pop();
+                if(paraRef.current.children[typed.length-1].classList.contains('wrong'))wrong--;
+                console.log(wrong)
+            }
             typed.pop();
             paraRef.current.children[typed.length].classList.remove('wrong');
             paraRef.current.children[typed.length].classList.remove('polish');
@@ -54,6 +58,7 @@ export const Main = () => {
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
                 paraRef.current.children[typed.length-1].classList.add('wrong');
                 wrong++;
+                console.log(wrong)
             }
             if(paraRef.current.children[typed.length].innerHTML===" "){
                 typed.push(" ")
