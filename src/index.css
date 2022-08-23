@@ -16,6 +16,23 @@ body{
   color:#03012C;
 }
 
+.polish{
+  color:white;
+}
+
+.unpolish{
+  color:white;
+  opacity: 0.5;
+}
+
+.wrong{
+  background-color:red;
+}
+
 .accent{
   color:gold;
+}
+
+.toggle{
+  background-color: rgba(0,0,0,0.6);
 }
