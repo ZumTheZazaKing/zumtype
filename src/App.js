@@ -4,6 +4,7 @@ import { Context } from './context.js';
 
 const Main = lazy(() => import('./pages/Main').then(module => ({default:module.Main})));
 const Results = lazy(() => import('./pages/Results').then(module => ({default:module.Results})));
+const Leaderboard = lazy(() => import('./pages/Leaderboard').then(module => ({default:module.Leaderboard})));
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
 
               <Route path="/" element={<Main/>}/>
               <Route path="/results" element={<Results/>}/>
+              <Route path="/leaderboard" element={<Leaderboard/>}/>
 
             </Routes>
           </Context.Provider>

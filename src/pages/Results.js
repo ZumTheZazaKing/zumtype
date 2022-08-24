@@ -1,6 +1,7 @@
 import { Context } from "../context";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import LeaderPopup from "../components/LeaderPopup";
 
 export const Results = () => {
     const navigate = useNavigate();
@@ -12,7 +13,6 @@ export const Results = () => {
         setCharCount(0);
         setWrong(0)
         navigate("/")
-
     }
 
     return (
@@ -30,9 +30,15 @@ export const Results = () => {
                 <span className="text-rose-400">Wrong Count: {wrong}</span>
             </p>
             <br/>
-            <button onClick={()=>tryAgain()} className="bg-sky-700 px-5 py-2 rounded-md">
-                Try again
-            </button>
+            <div className="flex flex-col sm:flex-row justify-center items-center">
+                <button onClick={()=>navigate("/leaderboard")} className="bg-rose-700 px-5 py-2 sm:mx-2 my-2 sm:my-0  rounded-md">
+                    Leaderboard
+                </button>
+                <button onClick={()=>tryAgain()} className="bg-sky-700 px-5 py-2 sm:mx-2 my-2 sm:my-0 rounded-md">
+                    Try again
+                </button>
+                <LeaderPopup/>
+            </div>
         </div>
     )
 }

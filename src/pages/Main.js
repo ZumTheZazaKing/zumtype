@@ -18,7 +18,7 @@ export const Main = () => {
     let timer = setInterval(()=>{
         if(started){
             timerRef.current.innerHTML = timerCount;
-            setTimerCount(timerCount--)
+            setTimerCount(--timerCount)
         }
         if(timerCount===0){
             clearInterval(timer);
@@ -68,7 +68,6 @@ export const Main = () => {
             if(paraRef.current.children[typed.length].innerHTML===" ")typed.push(" ");
             typed.push(e.key)
             setCharCount(++charCount);
-            console.log(charCount)
             if(typed[typed.length-1]===paraRef.current.children[typed.length-1].innerHTML){
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
                 paraRef.current.children[typed.length-1].classList.add('polish');
@@ -86,7 +85,6 @@ export const Main = () => {
                 paraRef.current.children[typed.length-1].classList.remove('unpolish');
                 paraRef.current.children[typed.length-1].classList.add('wrong');
                 setWrong(++wrong);
-                console.log(wrong)
             }
             if(paraRef.current.children[typed.length].innerHTML===" "){
                 typed.push(" ")
@@ -112,6 +110,9 @@ export const Main = () => {
                         <span className={`unpolish`} key={i}>{sentence}</span>
                     )}
                 </p>
+                <button onClick={()=>navigate("/leaderboard")} className="bg-rose-700 px-5 py-2 m-5 text-white rounded-md fixed top-0 left-0">
+                    Leaderboard
+                </button>
             </div>
             :<div className="loading"></div>}
         </div>
