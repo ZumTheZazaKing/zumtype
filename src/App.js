@@ -10,6 +10,8 @@ function App() {
 
   let [wrong, setWrong] = useState(0);
   let [charCount, setCharCount] = useState(0);
+  const [previousUrl, setPreviousUrl] = useState("/");
+  const [wentToLeaderboard, setWentToLeaderboard] = useState(false);
 
   return (
     <MemoryRouter>
@@ -20,6 +22,8 @@ function App() {
           <Context.Provider value={{
               wrong, setWrong,
               charCount, setCharCount,
+              previousUrl, setPreviousUrl,
+              wentToLeaderboard, setWentToLeaderboard
           }}>
             <Routes>
 

@@ -8,9 +8,10 @@ export const Main = () => {
     const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,;.!?()[]{}/"\'Backspace'
     const [chosenSentences, setChosenSentences] = useState("");
     const navigate = useNavigate();
-    let {wrong,charCount,setWrong,setCharCount} = useContext(Context)
+    let {wrong,charCount,setWrong,setCharCount,setPreviousUrl} = useContext(Context)
     let typed = [];
     let [timerCount, setTimerCount] = useState(30);
+    const [typerStart, setTyperStart] = useState(false);
     let started = false;
     const paraRef = useRef();
     const timerRef= useRef();
@@ -38,6 +39,11 @@ export const Main = () => {
 
         document.addEventListener('keydown',detectKeyDown,true)
 
+        return () => {
+            clearInterval(timer);
+            setTyperStart(false);
+        }
+
     },[])
 
     useEffect(()=>{
@@ -58,12 +64,12 @@ export const Main = () => {
             }
             typed.pop();
             setCharCount(--charCount);
-            console.log(charCount);
             paraRef.current.children[typed.length].classList.remove('wrong');
             paraRef.current.children[typed.length].classList.remove('polish');
             paraRef.current.children[typed.length].classList.add('unpolish');
         }else{
             if(!started)started=true;
+            if(!typerStart)setTyperStart(true);
             if(typed.length===[...paraRef.current.children].length)return;
             if(paraRef.current.children[typed.length].innerHTML===" ")typed.push(" ");
             typed.push(e.key)
@@ -92,6 +98,11 @@ export const Main = () => {
         }
     }
 
+    const leaderboard = () => {
+        navigate('/leaderboard');
+        setPreviousUrl("/");
+    }
+
     return (
         <div 
             className="d
@@ -110,7 +121,10 @@ export const Main = () => {
                         <span className={`unpolish`} key={i}>{sentence}</span>
                     )}
                 </p>
-                <button onClick={()=>navigate("/leaderboard")} className="bg-rose-700 px-5 py-2 m-5 text-white rounded-md fixed top-0 left-0">
+                <button 
+                    onClick={()=>leaderboard()} 
+                    className={`bg-rose-700 px-5 py-2 m-5 ${typerStart ? "hide" : ""} text-white rounded-md fixed top-0 left-0`}
+                >
                     Leaderboard
                 </button>
             </div>
