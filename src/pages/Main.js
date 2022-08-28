@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 export const Main = () => {
 
     const [sentences, setSentences] = useState(JSON.parse(localStorage.getItem("sentences")) || null);
-    const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,;.!?()[]{}/"\'Backspace'
+    const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,;.!?()[]{}/"\'BackspaceEnter'
     const [chosenSentences, setChosenSentences] = useState("");
     const navigate = useNavigate();
     let {wrong,charCount,setWrong,setCharCount,setPreviousUrl, bgcolor, setBgColor} = useContext(Context)
     let typed = [];
-    let [timerCount, setTimerCount] = useState(30);
+    let timerCount = 30;
     const [typerStart, setTyperStart] = useState(false);
     let started = false;
     const paraRef = useRef();
@@ -19,7 +19,7 @@ export const Main = () => {
     let timer = setInterval(()=>{
         if(started){
             timerRef.current.innerHTML = timerCount;
-            setTimerCount(--timerCount)
+            timerCount--
         }
         if(timerCount===0){
             clearInterval(timer);
@@ -58,8 +58,26 @@ export const Main = () => {
         setBgColor(e.target.value)
     }
 
+    const reset = () => {
+        wrong=0;
+        charCount=0;
+        timerCount=30
+        started=false;
+        timerRef.current.innerHTML = "Start Typing";
+        setTyperStart(false);
+        const start = Math.floor(Math.random()*(sentences.length-5))
+        setChosenSentences((sentences.slice(start, start+2)).join(". "))
+        typed=[];
+        [...paraRef.current.children].map((child,i)=>{
+            child.classList.remove('wrong');
+            child.classList.remove('polish');
+            child.classList.add('unpolish');
+        })
+    }
+
     const detectKeyDown = e => {
         if(!acceptedKeys.includes(e.key))return;
+        if(e.key === "Enter")return reset();
         if(e.key === "Backspace"){
             if(paraRef.current.children[typed.length-1].classList.contains('wrong')){
                 setWrong(--wrong);
@@ -127,6 +145,8 @@ export const Main = () => {
                         <span className={`unpolish`} key={i}>{sentence}</span>
                     )}
                 </p>
+                <br/>
+                <p className={`text-center text-white text-2xl ${typerStart ? "" : "opacity-0"}`}>Enter to Reset</p>
                 <div className={`flex justify-center items-center fixed top-0 left-0 ${typerStart ? "hide" : ""}`}>
                     <button 
                         onClick={()=>leaderboard()} 
