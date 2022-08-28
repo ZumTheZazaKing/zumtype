@@ -8,7 +8,7 @@ export const Main = () => {
     const acceptedKeys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,;.!?()[]{}/"\'Backspace'
     const [chosenSentences, setChosenSentences] = useState("");
     const navigate = useNavigate();
-    let {wrong,charCount,setWrong,setCharCount,setPreviousUrl} = useContext(Context)
+    let {wrong,charCount,setWrong,setCharCount,setPreviousUrl, bgcolor, setBgColor} = useContext(Context)
     let typed = [];
     let [timerCount, setTimerCount] = useState(30);
     const [typerStart, setTyperStart] = useState(false);
@@ -51,6 +51,12 @@ export const Main = () => {
        const start = Math.floor(Math.random()*(sentences.length-5))
        setChosenSentences((sentences.slice(start, start+2)).join(". "))
     },[sentences])
+
+    const colorChange = (e) => {
+        console.log(e.target.value);
+        localStorage.setItem("bgcolor",JSON.stringify(e.target.value))
+        setBgColor(e.target.value)
+    }
 
     const detectKeyDown = e => {
         if(!acceptedKeys.includes(e.key))return;
@@ -121,12 +127,20 @@ export const Main = () => {
                         <span className={`unpolish`} key={i}>{sentence}</span>
                     )}
                 </p>
-                <button 
-                    onClick={()=>leaderboard()} 
-                    className={`bg-rose-700 px-5 py-2 m-5 ${typerStart ? "hide" : ""} text-white rounded-md fixed top-0 left-0`}
-                >
-                    Leaderboard
-                </button>
+                <div className={`flex justify-center items-center fixed top-0 left-0 ${typerStart ? "hide" : ""}`}>
+                    <button 
+                        onClick={()=>leaderboard()} 
+                        className={`bg-rose-700 px-5 py-2 m-5  text-white rounded-md`}
+                    >
+                        Leaderboard
+                    </button>
+                    <input 
+                        className="color cursor-pointer" 
+                        value={bgcolor} 
+                        onChange={e=>colorChange(e)}
+                        type="color"
+                    />
+                </div>
             </div>
             :<div className="loading"></div>}
         </div>

@@ -12,10 +12,11 @@ function App() {
   let [charCount, setCharCount] = useState(0);
   const [previousUrl, setPreviousUrl] = useState("/");
   const [wentToLeaderboard, setWentToLeaderboard] = useState(false);
+  const [bgcolor, setBgColor] = useState(JSON.parse(localStorage.getItem("bgcolor")) || "#281875")
 
   return (
     <MemoryRouter>
-      <div className="App">
+      <div className="App" style={{backgroundColor:bgcolor}}>
         <Suspense fallback={<div className='w-screen h-screen flex items-center justify-center'>
           <div className="loading"></div>
         </div>}>
@@ -23,7 +24,8 @@ function App() {
               wrong, setWrong,
               charCount, setCharCount,
               previousUrl, setPreviousUrl,
-              wentToLeaderboard, setWentToLeaderboard
+              wentToLeaderboard, setWentToLeaderboard,
+              bgcolor, setBgColor
           }}>
             <Routes>
 
