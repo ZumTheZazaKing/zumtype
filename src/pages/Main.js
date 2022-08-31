@@ -159,6 +159,7 @@ export const Main = () => {
                         value={bgcolor} 
                         onChange={e=>colorChange(e)}
                         type="color"
+                        title="Background Color"
                     />
                 </div>
             </div>
